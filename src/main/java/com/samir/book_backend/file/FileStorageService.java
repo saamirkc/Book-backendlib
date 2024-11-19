@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,8 +39,8 @@ public class FileStorageService {
 
             }
         }
-        final String fileExtension = getFileExtension(sourceFile.getOriginalFilename());
-        String targetFilePath = fileUploadPath + File.separator + System.currentTimeMillis() + "." + fileExtension;
+        final String fileExtension = getFileExtension(sourceFile.getOriginalFilename());   //sourceFile.getOriginalFilename() converts into string.
+        String targetFilePath = finalUploadPath + File.separator + System.currentTimeMillis() + "." + fileExtension;
         Path targetPath = Paths.get(targetFilePath);
         try {
             Files.write(targetPath, sourceFile.getBytes());
