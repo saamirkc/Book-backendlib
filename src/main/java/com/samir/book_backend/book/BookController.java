@@ -75,7 +75,7 @@ return ResponseEntity.ok(bookService.findAllBooks(page,size,connectedUser));
     }
 
 //    update shareable status.
-@PatchMapping("/shareable/{bookId]")     //PatchMapping is used when you want to update specific fields or portions of a resource rather than replacing
+@PatchMapping("/shareable/{bookId}")     //PatchMapping is used when you want to update specific fields or portions of a resource rather than replacing
                                             // entire resource as you do with Put mapping.
     public ResponseEntity<Integer>  updateShareableStatus(
             @PathVariable Integer bookId ,Authentication connectedUser
@@ -85,7 +85,7 @@ return ResponseEntity.ok(bookService.findAllBooks(page,size,connectedUser));
     }
 
 //    update archived status .
-@PatchMapping("/archived/{bookId]")     //PatchMapping is used when you want to update specific fields or portions of a resource rather than replacing
+@PatchMapping("/archived/{bookId}")     //PatchMapping is used when you want to update specific fields or portions of a resource rather than replacing
 // entire resource as you do with Put mapping.
 public ResponseEntity<Integer>  updateArchivedStatus(
         @PathVariable Integer bookId ,Authentication connectedUser

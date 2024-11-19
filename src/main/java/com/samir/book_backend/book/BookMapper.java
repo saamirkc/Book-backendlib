@@ -1,9 +1,10 @@
 package com.samir.book_backend.book;
 
+import com.samir.book_backend.file.FileUtils;
 import com.samir.book_backend.history.BookTransactionalHistory;
-import lombok.Builder;
+
+
 import org.springframework.stereotype.Service;
-@Builder
 @Service
 public class BookMapper {
     public Book toBook(BookRequest request) {
@@ -29,6 +30,8 @@ public class BookMapper {
                 .archived(book.isArchived())
                 .owner(book.getOwner().getFullname())
 //               FOR  COVER , WE IMPLEMENT LATER
+//implementation
+                .cover(FileUtils.readFileFromLocation(book.getBookCover()))
                 .shareable(book.isShareable())
 
 

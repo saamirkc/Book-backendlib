@@ -29,7 +29,7 @@ public class Base {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime creationDate;
+    private LocalDateTime createdDate;
     @LastModifiedDate
     @Column(insertable  = false)
     private LocalDateTime lastModifiedDate;
@@ -39,6 +39,9 @@ public class Base {
     @LastModifiedBy
     @Column(insertable = false)
     private Integer lastModifiedBy;
+
+
+
 
 }
 

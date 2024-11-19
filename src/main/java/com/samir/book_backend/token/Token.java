@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class Token {
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
     private String token;
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;

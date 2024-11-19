@@ -1,11 +1,12 @@
 package com.samir.book_backend.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.samir.book_backend.book.Book;
+import com.samir.book_backend.history.BookTransactionalHistory;
 import com.samir.book_backend.role.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -27,12 +28,13 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
+//this is required in order for the functioning of or use of @CreatedDate and @LastModifiedDate annotations.
 
-public class User implements UserDetails , Principal {
+public class User implements UserDetails, Principal {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
 
-    private Long id;
+    private Integer id;
     private String firstname;
     private String lastname;
     private LocalDate dateOfBirth;
@@ -44,25 +46,36 @@ public class User implements UserDetails , Principal {
 
 // many user as manu user role
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles;
 
-@CreatedDate
-@Column(nullable = false,updatable = false)
+
+    @OneToMany(mappedBy = "owner")
+    private List<Book> books;
+
+
+//    relationship of user with book transactional history
+
+    @OneToMany(mappedBy = "user")
+    private List<BookTransactionalHistory> bookTransactionalHistories = new ArrayList<>();
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
-@LastModifiedDate
-@Column(insertable = false)
+    @LastModifiedDate
+    @Column(insertable = false)
     private LocalDateTime lastModifiedDate;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority>simpleGrantedAuthorities = new ArrayList<>();
+        List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
         this.roles.forEach(role -> {
-simpleGrantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+            simpleGrantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
 
         });
-return simpleGrantedAuthorities;
+        return simpleGrantedAuthorities;
     }
+
     @Override
     public String getName() {
         return email;
@@ -98,8 +111,11 @@ return simpleGrantedAuthorities;
         return UserDetails.super.isEnabled();
     }
 
-public String getFullname(){
+    public String getFullname() {
         return firstname + " " + lastname;
-}
+    }
+
+
+
 
 }

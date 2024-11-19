@@ -233,13 +233,13 @@ return bookTransactionalHistoryRepository.save(bookTransactionalHistory).getId()
 
         User user =(User) connectedUser.getPrincipal();
 
-        if(Objects.equals(book.getOwner().getId(),user.getId())){
-            throw new OperationNotPermittedException("You cannot borrow /return your own book ");
+        if(!Objects.equals(book.getOwner().getId(),user.getId())){
+            throw new OperationNotPermittedException("You cannot return  book that you do not own");
         }
         BookTransactionalHistory bookTransactionalHistory = (BookTransactionalHistory) bookTransactionalHistoryRepository.findByBookIdAndOwnerId(bookId,user.getId())
                 .orElseThrow(()->new OperationNotPermittedException("The book is not returned yet. You cannot approve this return"));
 //bookTransactionalHistory.setReturnedApproved(!bookTransactionalHistory.isReturnedApproved());
-        bookTransactionalHistory.setReturnedBook(true);  // both 239 and 240 same
+        bookTransactionalHistory.setReturnedApproved(true);  // both 239 and 240 same
         return bookTransactionalHistoryRepository.save(bookTransactionalHistory).getId();
     }
 
